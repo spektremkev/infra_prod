@@ -1,0 +1,23 @@
+para primeiro inicio / vagrant init hashicorp/precise64
+vagrant init
+Para status /  vagrant status
+Para subir / vagrant up
+
+
+Para conectar / vagrant ssh
+
+
+Para reinicia / vagrant reload
+Para destruir /  vagrant destroy 
+Para terminar / vagrant halt
+
+vagrant provision
+
+vagrant global-status
+vagrant global-status --prune
+para congigurar o ssh  / vagrant ssh-config
+ 
+ 
+ ~/Desktop/backup/ambiente_dev/bionic
+
+ ansible-playbook -i /vagrant/configs/ansible/hosts /vagrant/configs/ansible/playbook.ym
