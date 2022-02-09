@@ -24,9 +24,28 @@ configc.vm.define "hostcdnf" do |hostc|
       
   end
 end  
-#==============================Proxy================================================
+#==============================Proxys================================================
+configc.vm.define "nginxc" do |squid3c|
+  #nginxc.vm.provision "shell", inline: "yum update && dnf install nginx -y"   
+
+  squid3c.vm.network "forwarded_port", guest: 80, host:8089
+  squid3c.vm.network "public_network" , ip: "192.168.1.21"
+  #squid3c.vm.network "private_network", ip: "192.168.50.4"
+
+  squid3c.vm.provider "virtualbox" do |vb|
+        vb.memory = 1024
+        vb.cpus = 1
+        vb.name = "nginxc"
+        
+    end
+end    
+
   configc.vm.define "nginxc" do |nginxc|
     #nginxc.vm.provision "shell", inline: "yum update && dnf install nginx -y"   
+
+    nginxc.vm.network "forwarded_port", guest: 80, host:8080
+    nginxc.vm.network "public_network" , ip: "192.168.1.24"
+    #nginxc.vm.network "private_network", ip: "192.168.50.4"
 
     nginxc.vm.provider "virtualbox" do |vb|
         vb.memory = 1024
