@@ -5,77 +5,81 @@ $script_mysql = <<-SCRIPT
 SCRIPT
 
 
-Vagrant.configure("2") do |config|
+Vagrant.configure("2") do |configc|
 
-  config.vm.box = "centos/8"
+  configc.vm.box = "centos/8"
 
 
   #config.vm.network "private_network", ip: "192.168.50.10"
 
   
 #==============================Host================================================
-config.vm.define "host" do |host|
- host.vm.provision "shell", inline: "yum update "   
+configc.vm.define "hostcdnf" do |hostc|
+ hostc.vm.provision "shell", inline: "yum update "   
 
-  host.vm.provider "virtualbox" do |vb|
+  hostc.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
       vb.cpus = 1
-      vb.name = "host"
+      vb.name = "hostc"
       
   end
 end  
 #==============================Proxy================================================
-  config.vm.define "nginx" do |nginx|
-    nginx.vm.provision "shell", inline: "yum update && dnf install nginx -y"   
+  configc.vm.define "nginxc" do |nginxc|
+    nginxc.vm.provision "shell", inline: "yum update && dnf install nginx -y"   
 
-    nginx.vm.provider "virtualbox" do |vb|
+    nginxc.vm.provider "virtualbox" do |vb|
         vb.memory = 1024
         vb.cpus = 1
-        vb.name = "nginx"
+        vb.name = "nginxc"
         
     end
   end    
                         
 #==============================Cluster================================================
-      config.vm.define "mysqldb1" do |mysqldb1|
+      configc.vm.define "mysqldb1c" do |mysqldb1c|
        # mysqldb1.vm.network "forwarded_port", guest: 80, host:8081
         
-      mysqldb1.vm.provision "shell", 
+      mysqldb1c.vm.provision "shell", 
         inline: $script_mysql
-      mysqldb1.vm.provision "shell",
+      mysqldb1c.vm.provision "shell",
         inline: "service mysql restart"
 
-        mysqldb1.vm.provider "virtualbox" do |vb|
+        mysqldb1c.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
           vb.cpus = 1
-          vb.name = "mysqldb1"
+          vb.name = "mysqldb1c"
           end 
       end
       
-      config.vm.define "mysqldb2" do |mysqldb2|
+      configc.vm.define "mysqldb2c" do |mysqldb2c|
         #mysqldb2.vm.network "forwarded_port", guest: 80, host:8082
 
-      mysqldb2.vm.provision "shell", inline: $script_mysql
-      mysqldb2.vm.provision "shell",inline: "service mysql restart"
+      mysqldb2c.vm.provision "shell", 
+        inline: $script_mysql
+      mysqldb2c.vm.provision "shell", 
+        inline: "service mysql restart"
 
-        mysqldb2.vm.provider "virtualbox" do |vb|
+        mysqldb2c.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
           vb.cpus = 1
-          vb.name = "mysqldb2"
+          vb.name = "mysqldb2c"
           end 
       end
 
 
-      config.vm.define "mysqldb3" do |mysqldb3|
+      configc.vm.define "mysqldb3c" do |mysqldb3c|
       # mysqldb3.vm.network "forwarded_port", guest: 80, host:8083
 
-      mysqldb3.vm.provision "shell", inline: $script_mysql
-      mysqldb3.vm.provision "shell",inline: "service mysql restart"
+      mysqldb3c.vm.provision "shell", 
+        inline: $script_mysql
+      mysqldb3c.vm.provision "shell", 
+        inline: "service mysql restart"
 
-        mysqldb3.vm.provider "virtualbox" do |vb|
+        mysqldb3c.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
           vb.cpus = 1
-          vb.name = "mysqldb3"
+          vb.name = "mysqldb3c"
           end 
       end
   
@@ -83,14 +87,14 @@ end
 
 #==============================================================================
 
-config.vm.define "dockerhost" do |dockerhost|
+configc.vm.define "dockerhostc" do |dockerhostc|
 
- dockerhost.vm.provision "shell", inline: "yum update "   
-
-  dockerhost.vm.provider "virtualbox" do |vb|
+ dockerhostc.vm.provision "shell", 
+  inline: "yum update "   
+  dockerhostc.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
       vb.cpus = 1
-      vb.name = "ubuntu_dockerhost"
+      vb.name = "centos_dockerhostc"
       
   end
 end
