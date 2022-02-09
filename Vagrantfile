@@ -1,6 +1,6 @@
 $script_mysql = <<-SCRIPT
-    yum update && \
-    yum install -y mysql-server-5.7 && \
+    apt-get  update && \
+    apt install -y mysql-server-5.7 && \
     mysql -e "create user 'phpuser'@'%' identified by 'pass';"
 SCRIPT
 
@@ -23,6 +23,7 @@ config.vm.define "hostd" do |hostd|
       
   end
 end  
+
 #==============================Proxy================================================
   config.vm.define "nginx" do |nginxd|
     nginxd.vm.provision "shell", 
@@ -37,7 +38,7 @@ end
   end    
                         
 #==============================Cluster================================================
-      config.vm.define "mysqldb1d" do |mysqldb1d|
+    config.vm.define "mysqldb1d" do |mysqldb1d|
       mysqldb1d.vm.network "forwarded_port", guest: 80, host:8081
         
       mysqldb1d.vm.provision "shell", 
@@ -50,9 +51,9 @@ end
           vb.cpus = 1
           vb.name = "mysqldb1d"
           end 
-      end
+    end
       
-      config.vm.define "mysqldb2d" do |mysqldb2d|
+    config.vm.define "mysqldb2d" do |mysqldb2d|
         #mysqldb2.vm.network "forwarded_port", guest: 80, host:8082
       mysqldb2d.vm.provision "shell", 
           inline: $script_mysql
@@ -64,10 +65,10 @@ end
           vb.cpus = 1
           vb.name = "mysqldb2d"
           end 
-      end
+    end
 
 
-      config.vm.define "mysqldb3" do |mysqldb3d|
+    config.vm.define "mysqldb3d" do |mysqldb3d|
       # mysqldb3.vm.network "forwarded_port", guest: 80, host:8083
 
       mysqldb3d.vm.provision "shell", 
@@ -80,7 +81,7 @@ end
           vb.cpus = 1
           vb.name = "mysqldb3d"
           end 
-      end
+    end
   
 
 
