@@ -6,75 +6,79 @@ SCRIPT
 
 
 Vagrant.configure("2") do |config|
-  #config.vm.box = "ubuntu/focal64"
-  config.vm.box = "centos/8"
-
-
+  config.vm.box = "debian/stretch64"
   #config.vm.network "private_network", ip: "192.168.50.10"
 
   
 #==============================Host================================================
-config.vm.define "host" do |host|
- # host.vm.provision "shell", inline: "yum update "   
-  config.ssh.username = 'root'
-  config.ssh.password = 'vagrant'
-  config.ssh.insert_key = 'true'
+config.vm.define "hostd" do |hostd|
 
-  host.vm.provider "virtualbox" do |vb|
+  hostd.vm.provision "shell", 
+  inline: "apt-get update"
+
+  hostd.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
       vb.cpus = 1
-      vb.name = "host"
+      vb.name = "hostd"
       
   end
 end  
 #==============================Proxy================================================
-  config.vm.define "nginx" do |nginx|
-    #nginx.vm.provision "shell", inline: "yum update && dnf install nginx -y"   
+  config.vm.define "nginx" do |nginxd|
+    nginxd.vm.provision "shell", 
+      inline: "apt-get update && apt-get install nginx -y"   
 
-    nginx.vm.provider "virtualbox" do |vb|
+    nginxd.vm.provider "virtualbox" do |vb|
         vb.memory = 1024
         vb.cpus = 1
-        vb.name = "nginx"
+        vb.name = "nginxd"
         
     end
   end    
                         
 #==============================Cluster================================================
-      config.vm.define "mysqldb1" do |mysqldb1|
-       # mysqldb1.vm.network "forwarded_port", guest: 80, host:8081
+      config.vm.define "mysqldb1d" do |mysqldb1d|
+      mysqldb1d.vm.network "forwarded_port", guest: 80, host:8081
         
-      # mysqldb1.vm.provision "shell", inline: $script_mysql
-      # mysqldb1.vm.provision "shell", inline: "service mysql restart"
+      mysqldb1d.vm.provision "shell", 
+          inline: $script_mysql
+      mysqldb1d.vm.provision "shell", 
+          inline: "service mysql restart"
 
-        mysqldb1.vm.provider "virtualbox" do |vb|
+        mysqldb1d.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
           vb.cpus = 1
-          vb.name = "mysqldb1"
+          vb.name = "mysqldb1d"
           end 
       end
       
-      config.vm.define "mysqldb2" do |mysqldb2|
+      config.vm.define "mysqldb2d" do |mysqldb2d|
         #mysqldb2.vm.network "forwarded_port", guest: 80, host:8082
-      # mysqldb2.vm.provision "shell", inline: $script_mysql
-      # mysqldb2.vm.provision "shell",inline: "service mysql restart"
+      mysqldb2d.vm.provision "shell", 
+          inline: $script_mysql
+      mysqldb2d.vm.provision "shell", 
+          inline: "service mysql restart"
 
-        mysqldb2.vm.provider "virtualbox" do |vb|
+        mysqldb2d.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
           vb.cpus = 1
-          vb.name = "mysqldb2"
+          vb.name = "mysqldb2d"
           end 
       end
 
 
-      config.vm.define "mysqldb3" do |mysqldb3|
+      config.vm.define "mysqldb3" do |mysqldb3d|
       # mysqldb3.vm.network "forwarded_port", guest: 80, host:8083
-      # mysqldb3.vm.provision "shell", inline: $script_mysql
-      # mysqldb3.vm.provision "shell",inline: "service mysql restart"
 
-        mysqldb3.vm.provider "virtualbox" do |vb|
+      mysqldb3d.vm.provision "shell", 
+          inline: $script_mysql
+      mysqldb3d.vm.provision "shell", 
+          inline: "service mysql restart"
+
+        mysqldb3d.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
           vb.cpus = 1
-          vb.name = "mysqldb3"
+          vb.name = "mysqldb3d"
           end 
       end
   
@@ -82,14 +86,14 @@ end
 
 #==============================================================================
 
-config.vm.define "dockerhost" do |dockerhost|
+config.vm.define "dockerhostd" do |dockerhostd|
 
  # dockerhost.vm.provision "shell", inline: "yum update "   
 
-  dockerhost.vm.provider "virtualbox" do |vb|
+  dockerhostd.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
       vb.cpus = 1
-      vb.name = "ubuntu_dockerhost"
+      vb.name = "ubuntu_dockerhostd"
       
   end
 end
