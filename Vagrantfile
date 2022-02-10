@@ -12,7 +12,7 @@ configc.vm.define "hostc" do |hostc|
  hostc.vm.provision "shell", path: "hostc.sh"
 
   hostc.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+      vb.memory = 512
       vb.cpus = 1
       vb.name = "hostc"
       
@@ -26,7 +26,7 @@ configc.vm.define "squid3c" do |squid3c|
 
   squid3c.vm.provision "shell", path: "squid3c.sh"
   squid3c.vm.provider "virtualbox" do |vb|
-        vb.memory = 1024
+        vb.memory = 512
         vb.cpus = 1
         vb.name = "squid3c"
         
@@ -43,7 +43,7 @@ configc.vm.define "nginxc" do |nginxc|
     nginxc.vm.provision "shell", path: "nginxc.sh"
 
     nginxc.vm.provider "virtualbox" do |vb|
-        vb.memory = 1024
+        vb.memory = 512
         vb.cpus = 1
         vb.name = "nginxc"
         
@@ -57,7 +57,7 @@ end
         mysqldb1c.vm.provision "shell", path: "mysqldbc.sh"
 
         mysqldb1c.vm.provider "virtualbox" do |vb|
-          vb.memory = 1024
+          vb.memory = 512
           vb.cpus = 1
           vb.name = "mysqldb1c"
           end 
@@ -72,7 +72,7 @@ end
        # mysqldb2c.vm.provision "shell", inline: "service mysql restart"
 
         mysqldb2c.vm.provider "virtualbox" do |vb|
-          vb.memory = 1024
+          vb.memory = 512
           vb.cpus = 1
           vb.name = "mysqldb2c"
           end 
@@ -89,7 +89,7 @@ end
      # mysqldb3c.vm.provision "shell", inline: "service mysql restart"
 
         mysqldb3c.vm.provider "virtualbox" do |vb|
-          vb.memory = 1024
+          vb.memory = 512
           vb.cpus = 1
           vb.name = "mysqldb3c"
           end 
@@ -105,7 +105,7 @@ configc.vm.define "dockerhostc" do |dockerhostc|
 
  dockerhostc.vm.provision "shell", path: "dockerhostc.sh"
   dockerhostc.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+      vb.memory = 512
       vb.cpus = 1
       vb.name = "dockerhostc"
       
