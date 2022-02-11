@@ -4,7 +4,4 @@ sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /
 sudo dnf install centos-release-stream -y 
 sudo dnf swap centos-{linux,stream}-repos -y 
 sudo dnf distro-sync -y
-yum install vim-enhanced -y
-dnf install nginx -y
-systemctl status nginx
-systemctl start nginx
+sudo dnf install -y mysql-router 

@@ -5,3 +5,10 @@ sudo dnf install centos-release-stream -y
 sudo dnf swap centos-{linux,stream}-repos -y 
 sudo dnf distro-sync -y
 sudo yum install mysql-server -y
+systemctl start mysqld
+sudo systemctl status mysqld
+
+
+
+
+

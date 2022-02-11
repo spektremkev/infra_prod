@@ -1,0 +1,35 @@
+
+a incluir no nginx.conf
+stream {
+    upstream mysql3306 {
+        hash $remote_addr consistent;
+        server 192.168.50.2:3306 weight=5 max_fails=3 fail_timeout=30s;
+    }
+	
+	 server {
+        listen 3306;
+        proxy_connect_timeout 10s;
+        proxy_timeout 200s;
+        proxy_pass mysql3306;
+        #proxy_pass http://db;
+    }
+}
+======================================================================================================
+bL29V1!2@93
+
+criar um usuario que tenha acesso de todo o lugar do computador e que tenha acesso ao banco de dados
+
+
+CREATE USER 'username'@'ip_address' IDENTIFIED BY 'password';
+
+CREATE USER 'username'@'192.168.0.%' IDENTIFIED BY 'password';
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%';
+Flush privileges;
+
+mysql -u vagrant -h 192.168.50.2 -p
+
+======================================================================================================
+mysql_client 
+mysql --user=vagrant -bL29V1!2@94- vagrant
