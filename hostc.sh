@@ -7,5 +7,9 @@ sudo dnf distro-sync -y
 rpm -ivh https://yum.puppetlabs.com/el/7/products/x86_64/puppetlabs-release-7-11.noarch.rpm
 yum install -y puppet-server
 yum install -y puppet-agent
-
+yum install vim-enhanced -y
+yum install mysql -y
 sudo yum -y install ansible
+sudo yum install mysql-server -y
+systemctl start mysqld
+sudo systemctl status mysqld

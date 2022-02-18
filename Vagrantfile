@@ -82,8 +82,7 @@ configc.vm.define "mysqlrouter" do |mysqlrouter|
       vb.name = "nginxc"
       
   end
-end    
-                        
+end       
 #==============================Cluster================================================
       configc.vm.define "mysqldb1c" do |mysqldb1c|
         
@@ -91,6 +90,7 @@ end
 
         mysqldb1c.vm.network "private_network", ip: "192.168.50.2"
         mysqldb1c.vm.provision "shell", path: "mysqldbc.sh"
+        
 
         mysqldb1c.vm.provider "virtualbox" do |vb|
           vb.memory = 1024
@@ -126,9 +126,6 @@ end
           vb.name = "mysqldb3c"
           end 
     end
-  
-
-
 #===============================Dcoker================================================
 
 configc.vm.define "dockerhostc" do |dockerhostc|

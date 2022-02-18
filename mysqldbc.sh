@@ -4,6 +4,7 @@ sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /
 sudo dnf install centos-release-stream -y 
 sudo dnf swap centos-{linux,stream}-repos -y 
 sudo dnf distro-sync -y
+yum install vim-enhanced -y
 sudo yum install mysql-server -y
 systemctl start mysqld
 sudo systemctl status mysqld

@@ -1,11 +1,120 @@
+================================================vagrant================================================
+para primeiro inicio / vagrant init hashicorp/precise64
+vagrant init
+Para status /  vagrant status
+Para subir / vagrant up
+Para conectar / vagrant ssh
+Para reinicia / vagrant reload
+Para destruir /  vagrant destroy 
+Para terminar / vagrant halt
+vagrant provision
+vagrant global-status
+vagrant global-status --prune
+para congigurar o ssh  / vagrant ssh-config
+~/Desktop/backup/ambiente_dev/bionic
+ansible-playbook -i /vagrant/configs/ansible/hosts /vagrant/configs/ansible/playbook.ym
+======================================nginx============================================================
+nginx -t -c /etc/nginx/nginx.conf
+comandos nginx
+instalação CentOS/RHEL, o processo é facilmente executado com o comando
+yum install nginx ou  dnf install nginx
+status do nginx / systemctl status nginx
+inicio do nginx / service nginx start
+para reiniciar o nginx / systemctl restart nginx.service
+para parar o nginx / service nginx stop
+Caso o sevidor esteja apresentando lentidão por muitos processos 
+killall -9 nginx
+Validando configulação do nginx / nginx -t ou service nginx confistest
+upgrade do nginx / servise nginx update 
+verificando se a versão e modulos compilados no nginx / nginx -V
 
-a incluir no nginx.conf
+======================================mysql============================================================
+systemctl status mysqld
+systemctl start mysqld.service
+dba.configureInstance('vagrant@192.168.50.2:3306');
+passwork: bL29V1!2@94
+dba.checkInstanceConfiguration('vagrant@192.168.50.2:3306');
+cluster = dba.createCluster('vagranttest');
+dba.checkInstanceConfiguration()
+Cluster.dissolve()
+dba.getCluster().status();
+cluster.addInstance(‘cluster_admin@node2’);
+drop database mysql_innodb_cluster_metadata;
+set global super_read_only=0;
+dba.configurelocalinstance(username@MySQLServer:Portnumber);
+dba.getCluster([name][, options])
+var cluster = dba.getcluster('vagrant');
+var cluster = dba.rebootClusterFromCompleteOutage();
+Cluster = dba.listClusters();
+cluster.status();
+Cluster.dissolve()
+======================================vim==============================================================
+comandos Vim 
+-b : permite editar arquivo binario
+-h : exibe opções 
++n : inicializa o cursor na n-ésima linha
+-r : recarrega o arquivo (o arquivo estava sendo editado quando o vim foi encerrado)
+-R : abre arquivo apenas para leitura
+
+Modo de comando
+0 : mover o cursor para o início da linha em que o cursor está posicionado.
+a : inserir texto após a posição atual do cursor.
+A : inserir texto no final da linha atual.
+dd : deletar linha atual.
+[n]+dd : deletar n linhas a partir da linha atual.
+G : ir para o fim do arquivo.
+[n]+G : ir para a n-ésima linha do arquivo.
+h : voltar um caractere.
+H : ir para a primeira linha exibida na tela atual.
+i : inserir texto a partir da posição atual do cursor.
+I : inserir texto no início da linha atual.
+j : descer uma linha.
+J : juntar a linha atual com a linha seguinte.
+[n]+J : juntar n linhas consecutivas a partir da linha atual.
+k : subir uma linha.
+l : avançar um caractere.
+L : ir para a última linha exibida na tela atual.
+n : procurar, a partir da posição atual do cursor, a próxima ocorrência do texto definido no último comando /.
+N : procurar, a partir da posição atual do cursor e indo em direção ao início do arquivo,
+a próxima ocorrência do texto definido no último comando /.
+
+o : inserir uma linha em branco após a linha atual.
+O : inserir uma linha em branco acima da linha atual.
+p : inserir linhas copiadas após a linha atual.
+P : inserir linhas copiadas antes da linha atual.
+r : substituir o caractere atual.
+R : substituir um conjunto de caracteres.
+s : deletar o caractere atual e inserir texto.
+S : apagar linha e inserir novo texto na linha.
+u : desfazer a última alteração feita no texto e ainda não desfeita.
+U : desfazer a última alteração feita no texto.
+x : apagar caractere onde o cursor está posicionado.
+$ : mover o cursor para o fim da linha em que o cursor está posicionado.
+[n]+y : copiar n linhas a partir da linha atual.
+yy : copiar a linha atual.
+[n]+Y : copiar n linhas a partir da linha atual.
+YY : copiar a linha atual.
+CTRL+B : voltar uma página.
+CTRL+F : avançar uma página.
+F1 : exibir tela de ajuda.
+[n]+ENTER : ir para n linhas abaixo da linha atual.
+[n]+. : repetir o último comando que alterou o texto n vezes a partir da posição atual do cursor.
+[n]+~+ENTER : inverter a caixa (case) dos n caracteres seguintes ao cursor.
+/texto : procurar pela primeira ocorrência do texto especificado a partir da posição atual do cursor.
+
+Modo de linha
+:r arquivo : incluir arquivo a partir da linha atual do cursor.
+:q+ENTER : sair da tela de ajuda.
+:q! : sair do vim sem salvar as alterações.
+:w arquivo : salvar arquivo com o nome especificado.
+:wq : sair do vim salvando as alterações.
+:X : criptografa o arquivo.
+================================================a incluir no nginx.conf================================================================
 stream {
     upstream mysql3306 {
         hash $remote_addr consistent;
         server 192.168.50.2:3306 weight=5 max_fails=3 fail_timeout=30s;
     }
-	
 	 server {
         listen 3306;
         proxy_connect_timeout 10s;
@@ -14,22 +123,172 @@ stream {
         #proxy_pass http://db;
     }
 }
-======================================================================================================
+server {
+    listen 80;
+    server_name db;
+    location / mysql -u vagrant -h 192.168.50.2 -p {
+        proxy_pass http:// 192.168.50.2:3306
+    }
+    nging -s reload
+#====================================================/etc/hosts==========================================================
+ideia descontinuada -  consistia em manter definir um hostname para cada maquina diretamente no arquivo hosts
+192.168.50.8 hostc
+192.168.50.2 mysqldb1c
+192.168.50.3 mysqldb2c
+192.168.50.4 mysqldb3c
+===============================================Criação do usuario=======================================================
+criar um usuario que tenha acesso de todo o lugar do computador e que tenha acesso ao banco de dados
+APOS A INSTALACAO DO MYSQL REINICIAR O SERVIDOR PARA GARABTIR O SERVIDOR ATIVO
+-----------------------------modelo--------------------------------------
+CREATE USER 'username'@'ip_address' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'ip_address' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+-------------------------------------------------------------------------
+#hostc
+192.168.50.8
+
+mysql -u root -p
 bL29V1!2@93
 
-criar um usuario que tenha acesso de todo o lugar do computador e que tenha acesso ao banco de dados
-
-
-CREATE USER 'username'@'ip_address' IDENTIFIED BY 'password';
-
-CREATE USER 'username'@'192.168.0.%' IDENTIFIED BY 'password';
 CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+# mysqldb1c
+192.168.50.2 mysqldb1c
+
+mysql -u root -p
+bL29V1!2@93
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+# mysqldb2c
+
+mysql -u root -p
+bL29V1!2@93
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+# mysqldb3c
+
+mysql -u root -p
+bL29V1!2@93
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+============================================bancodeteste==================================================================
+show databases;
+USE vagranttest;
+
+CREATE DATABASE vagranttest;
+
+
+CREATE TABLE fornecedores(codigo int(6) AUTO_INCREMENT,nome varchar(100) NOT NULL,email varchar(100),PRIMARY KEY (codigo));
+INSERT INTO fornecedores(codigo, nome, email) VALUES (null, "Gabriel1", "vagrant_teste@gmail.com");
+INSERT INTO fornecedores(codigo, nome, email) VALUES (null, "Gabriel2", "vagrant44_teste@gmail.com");
+INSERT INTO fornecedores(codigo, nome, email) VALUES (null, "Gabriel3", "vagrant22_teste@gmail.com");
+
+==========================================Criação do clustar============================================================
+login
+\c vagrant@192.168.50.2
+passwork: bL29V1!2@94
+
+dba.configureInstance('vagrant@192.168.50.2:3306');
+passwork: bL29V1!2@94
+
+set global super_read_only=0;
+
+dba.checkInstanceConfiguration('vagrant@192.168.50.2:3306');
+cluster = dba.createCluster('vagranttest');
+var 192.168.50.2 = dba.createCluster('vagranttest');
+----------------erro------------------------------
+Dba.createCluster: Group Replication failed to start: MySQL Error 3092 (HY000): localhost.localdomain:3306: 
+The server is not configured properly to be an active member of the group. Please see more details on error log. 
+(RuntimeError)
+--------------------------------------------------
+dba.checkInstanceConfiguration()
+Cluster.dissolve()
+dba.getCluster().status();
+cluster.addInstance('cluster_admin@');
+drop database mysql_innodb_cluster_metadata;
+set global super_read_only=0;
+dba.configurelocalinstance('u''sername@MySQLServer:Portnumber');
+
+dba.getCluster([name][, options])
+var cluster = dba.getcluster('vagrant');
+var cluster = dba.rebootClusterFromCompleteOutage();
+Cluster = dba.listClusters();
+cluster.status();
+Cluster.dissolve()
+==================================================solucao com o renato========================================================
+# Group replication part
+transaction_write_set_extraction=XXHASH64
+loose-group_replication_start_on_boot=OFF
+loose-group_replication_local_address="192.168.100.202:33061"
+loose-group_replication_bootstrap_group=OFF
+report_port=3306 
+report_host=192.168.100.202
+
+loose-group_replication_local_address="192.168.100.202:33061" report_host=192.168.100.202
+
+SHOW GLOBAL VARIABLES LIKE '%report_host%'
+
+===================criação do cluster baseado neste video https://www.youtube.com/watch?v=gyP9y0VDdYI=========================
+
+
+
+
+===============================================manipulação de usuarios=======================================================
+
+SELECT User, Host FROM mysql.user;
+SELECT User, FROM mysql.user;
+
 
 GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%';
 Flush privileges;
 
-mysql -u vagrant -h 192.168.50.2 -p
 
-======================================================================================================
-mysql_client 
-mysql --user=vagrant -bL29V1!2@94- vagrant
+=====================================teste=================================================================
+protoclo de teste 
+vagrant halt  mysqldb1c mysqldb2c mysqldb3c nginxc hostc
+
+find / -name 
+
+curl ifconfig.me
+ip addr
+hostname -I
+
+caminho para manipulações de arquivos
+vagrant scp "\Users\gabri\Downloads\mysql-shell-8.0.28-1.el8.x86_64.rpm" hostc:/home/vagrant
+mv '\Users\gabri\Downloads\mysql-shell-8.0.28-1.el8.x86_64.rpm' mysql-shell-8.0.28-1.el8.x86_64.rpm
+
+yum localinstall mysql-shell-8.0.28-1.el8.x86_64.rpm
+
+check se o sevidor esta funcionando
+- systemctl status mysqld
+- systemctl start mysqld.service
+
+
+acesso ao mysql 
+- mysql -u vagrant -h 192.168.50.2 -p
+- bL29V1!2@94
+
+mysql -u root -p
+bL29V1!2@93
+
+previlegios consedidos a maquina pra ....
+GRANT CLONE_ADMIN, CONNECTION_ADMIN, CREATE USER, EXECUTE, FILE, GROUP_REPLICATION_ADMIN, PERSIST_RO_VARIABLES_ADMIN, PROCESS, RELOAD, REPLICATION CLIENT, REPLICATION SLAVE, REPLICATION_APPLIER, REPLICATION_SLAVE_ADMIN, ROLE_ADMIN, SELECT, SHUTDOWN, SYSTEM_VARIABLES_ADMIN ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+GRANT DELETE, INSERT, UPDATE ON mysql.* TO 'vagrant'@'%' WITH GRANT OPTION;
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SHOW VIEW, TRIGGER, UPDATE ON mysql_innodb_cluster_metadata.* TO 'vagrant'@'%' WITH GRANT OPTION;
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SHOW VIEW, TRIGGER, UPDATE ON mysql_innodb_cluster_metadata_bkp.* TO 'vagrant'@'%' WITH GRANT OPTION;
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SHOW VIEW, TRIGGER, UPDATE ON mysql_innodb_cluster_metadata_previous.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
