@@ -38,6 +38,7 @@ cluster = dba.createCluster('vagranttest');
 dba.checkInstanceConfiguration()
 Cluster.dissolve()
 dba.getCluster().status();
+SHOW GLOBAL VARIABLES LIKE '%report_host%';
 cluster.addInstance(‘cluster_admin@node2’);
 drop database mysql_innodb_cluster_metadata;
 set global super_read_only=0;
@@ -182,6 +183,13 @@ bL29V1!2@93
 
 CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
 GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+# mysqldb4c
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 ============================================bancodeteste==================================================================
@@ -196,10 +204,23 @@ INSERT INTO fornecedores(codigo, nome, email) VALUES (null, "Gabriel1", "vagrant
 INSERT INTO fornecedores(codigo, nome, email) VALUES (null, "Gabriel2", "vagrant44_teste@gmail.com");
 INSERT INTO fornecedores(codigo, nome, email) VALUES (null, "Gabriel3", "vagrant22_teste@gmail.com");
 
-==========================================Criação do clustar============================================================
-login
-\c vagrant@192.168.50.2
-passwork: bL29V1!2@94
+==========================================Criação do cluster============================================================
+login maquina mysqldb1c
+
+iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
+
+\c vagrant@192.168.50.2 = password - não e pedida a senha
+mysql -u root padrão
+
+mysqladmin -u root  bL29V1!2@93 bL29V1!2@93
+
+mysql -u root -p
+bL29V1!2@93
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
 
 dba.configureInstance('vagrant@192.168.50.2:3306');
 passwork: bL29V1!2@94
@@ -208,18 +229,104 @@ set global super_read_only=0;
 
 dba.checkInstanceConfiguration('vagrant@192.168.50.2:3306');
 cluster = dba.createCluster('vagranttest');
-var 192.168.50.2 = dba.createCluster('vagranttest');
+
 ----------------erro------------------------------
 Dba.createCluster: Group Replication failed to start: MySQL Error 3092 (HY000): localhost.localdomain:3306: 
-The server is not configured properly to be an active member of the group. Please see more details on error log. 
-(RuntimeError)
+The server is not configured properly to be an active member of the group. Please see more details on error log. (RuntimeError)
+
+
+como mando deve ser posto no bash do centos- setsebool -P mysql_connect_any 1
+
+solução para erro as
+implementado o comando 'report_host=192.168.50.2' no arquivo  mysql-server.cnf no diretorio /etc/mysql/my.cnf.d/
+
+check com este comando se o as auteraçoes acima foram validas com este comando - SHOW VARIABLES LIKE '%report_host%';
+
+como mando deve ser posto no mysql-client - set global super_read_only=0;
 --------------------------------------------------
+cluster.addInstance('vagrant@192.168.50....')
+cluster.addInstance('192.168.50.2@mysqldb2c');
+---------------------error------------------------------
+teste um - tentativa de alterar as pemissoes do SElinux não funcionou 
+
+Solução:
+lembre de liberar as portas iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
+
+alterar as portas do mysql para 330...
+mysqldb1c port = 3360
+mysqldb2c port = 3362
+mysqldb3c port =3363
+mysqldb4c port =3364
+
+-----------------------acesso remoto via terminal---------------------------------
+mysql -h <ip>-u <root> -p
+mysql -h 192.168.50.2 -u root -p
+
+https://www.digitalocean.com/community/tutorials/how-to-allow-remote-access-to-mysql - com o workbench
+possivel solução:
+https://stackoverflow.com/questions/14779104/mysql-how-to-allow-remote-connection-to-mysql
+https://www.youtube.com/watch?v=PVo70d-BkUg
+
+
+______________________________________________________________________________________________________________________________
+maquina mysqldb2c
+\c vagrant@192.168.50.3
+mysql -u root -p = password - bL29V1!2@93
+
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+dba.configureInstance('vagrant@192.168.50.3'); passwork: bL29V1!2@94
+dba.checkInstanceConfiguration('vagrant@192.168.50.3');
+cluster = dba.createCluster('vagranttest');
+
+var 192.168.50.2 = dba.createCluster('vagranttest');
+______________________________________________________________________________________________________________________________
+maquina mysqldb3c
+\c vagrant@192.168.50.4 não e pedida a senha na maquina tres #passwork: bL29V1!2@94
+
+mysql -u root -p = password - bL29V1!2@93
+
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+SHOW VARIABLES LIKE '%report_host%';
+
+dba.configureInstance('vagrant@192.168.50.4:3306'); passwork: bL29V1!2@94
+dba.checkInstanceConfiguration('vagrant@192.168.50.4:3306');
+cluster = dba.createCluster('vagranttest');
+var 192.168.50.2 = dba.createCluster('vagranttest');
+______________________________________________________________________________________________________________________________
+maquina mysqldb4c
+\c vagrant@192.168.50.10
+
+mysql -u root -p = password - bL29V1!2@93
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+dba.configureInstance('vagrant@192.168.50.10:3306'); passwork: bL29V1!2@94  
+dba.checkInstanceConfiguration('vagrant@192.168.50.10:3306');
+cluster = dba.createCluster('vagranttest');
+var 192.168.50.2 = dba.createCluster('vagranttest');
+
+
+
+
+
 dba.checkInstanceConfiguration()
 Cluster.dissolve()
 dba.getCluster().status();
 cluster.addInstance('cluster_admin@');
+
 drop database mysql_innodb_cluster_metadata;
 set global super_read_only=0;
+
 dba.configurelocalinstance('u''sername@MySQLServer:Portnumber');
 
 dba.getCluster([name][, options])
@@ -258,7 +365,7 @@ Flush privileges;
 
 =====================================teste=================================================================
 protoclo de teste 
-vagrant halt  mysqldb1c mysqldb2c mysqldb3c nginxc hostc
+vagrant up  mysqldb1c mysqldb2c mysqldb3c mysqldb4c nginxc hostc
 
 find / -name 
 
@@ -277,7 +384,8 @@ check se o sevidor esta funcionando
 - systemctl start mysqld.service
 
 
-acesso ao mysql 
+acesso ao mysql
+ch -  \c vagrant@192.168.50.2
 - mysql -u vagrant -h 192.168.50.2 -p
 - bL29V1!2@94
 
@@ -291,4 +399,10 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SHOW VIEW, TRIGGER, UPDATE ON mysql_innodb_cluster_metadata_bkp.* TO 'vagrant'@'%' WITH GRANT OPTION;
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SHOW VIEW, TRIGGER, UPDATE ON mysql_innodb_cluster_metadata_previous.* TO 'vagrant'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+
+SELINUX=Permissive cd /etc/selinux/
+
+re estabelecer o cluster quando reinicial o servidor de teste
+dba.rebootClusterFromCompleteOutage();
+
 

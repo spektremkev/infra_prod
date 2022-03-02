@@ -9,7 +9,7 @@ configc.vm.define "hostc" do |hostc|
  hostc.vm.provision "shell", path: "hostc.sh"
  hostc.vm.network "private_network", ip: "192.168.50.8"
   hostc.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+      vb.memory =  1024
       vb.cpus = 1
       vb.name = "hostc"
       
@@ -27,7 +27,7 @@ configc.vm.define "mysqlclientc" do |mysqlclientc|
   mysqlclientc.vm.provision "shell", path: "mysqlclientc.sh"
 
   mysqlclientc.vm.provider "virtualbox" do |vb|
-      vb.memory = 512
+      vb.memory = 1024
       vb.cpus = 1
       vb.name = "mysqlclientc"
       
@@ -42,7 +42,7 @@ configc.vm.define "squid3c" do |squid3c|
 
   squid3c.vm.provision "shell", path: "squid3c.sh"
   squid3c.vm.provider "virtualbox" do |vb|
-        vb.memory = 1024
+        vb.memory =  1024
         vb.cpus = 1
         vb.name = "squid3c"
         
@@ -60,7 +60,7 @@ configc.vm.define "nginxc" do |nginxc|
     nginxc.vm.provision "shell", path: "nginxc.sh"
 
     nginxc.vm.provider "virtualbox" do |vb|
-        vb.memory = 1024
+        vb.memory =  1024
         vb.cpus = 1
         vb.name = "nginxc"
         
@@ -77,7 +77,7 @@ configc.vm.define "mysqlrouter" do |mysqlrouter|
   mysqlrouter.vm.provision "shell", path: "nginxc.sh"
 
   mysqlrouter.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+      vb.memory =  1024
       vb.cpus = 1
       vb.name = "nginxc"
       
@@ -93,7 +93,7 @@ end
         
 
         mysqldb1c.vm.provider "virtualbox" do |vb|
-          vb.memory = 1024
+          vb.memory =  1024
           vb.cpus = 1
           vb.name = "mysqldb1c"
           end 
@@ -105,7 +105,7 @@ end
         mysqldb2c.vm.provision "shell", path: "mysqldbc.sh"
 
         mysqldb2c.vm.provider "virtualbox" do |vb|
-          vb.memory = 1024
+          vb.memory =  1024
           vb.cpus = 1
           vb.name = "mysqldb2c"
           end 
@@ -121,12 +121,28 @@ end
      # mysqldb3c.vm.provision "shell", inline: "service mysql restart"
 
         mysqldb3c.vm.provider "virtualbox" do |vb|
-          vb.memory = 1024
+          vb.memory =  1024
           vb.cpus = 1
           vb.name = "mysqldb3c"
           end 
     end
-#===============================Dcoker================================================
+
+    configc.vm.define "mysqldb4c" do |mysqldb4c|
+      mysqldb4c.vm.network "forwarded_port", guest: 80, host:8086
+      mysqldb4c.vm.network "private_network", ip: "192.168.50.10"
+      
+      mysqldb4c.vm.provision "shell", path: "mysqldbc.sh"
+
+     # mysqldb3c.vm.provision "shell", inline: $script_mysql
+     # mysqldb3c.vm.provision "shell", inline: "service mysql restart"
+
+         mysqldb4c.vm.provider "virtualbox" do |vb|
+          vb.memory =  1024
+          vb.cpus = 1
+          vb.name = "mysqldb4c"
+          end 
+    end
+#===============================Doker================================================
 
 configc.vm.define "dockerhostc" do |dockerhostc|
 
@@ -134,7 +150,7 @@ configc.vm.define "dockerhostc" do |dockerhostc|
   dockerhostc.vm.network "private_network", ip: "192.168.50.5"
  dockerhostc.vm.provision "shell", path: "dockerhostc.sh"
   dockerhostc.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+      vb.memory =  1024
       vb.cpus = 1
       vb.name = "dockerhostc"
       

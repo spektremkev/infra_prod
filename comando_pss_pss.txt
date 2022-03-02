@@ -1,0 +1,50 @@
+login maquina mysqldb1c
+\c vagrant@192.168.50.2
+mysql -u root padrão nullstring
+
+#mysqladmin -u root  bL29V1!2@93 bL29V1!2@93
+
+mysql -u root -p
+bL29V1!2@93
+
+CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+comando deve ser posto no mysql-client antes "configureInstance" - set global super_read_only=0;
+
+dba.configureInstance('vagrant@192.168.50.2:3306');
+passwork: bL29V1!2@94
+
+dba.checkInstanceConfiguration('vagrant@192.168.50.2:3306');
+cluster = dba.createCluster('vagranttest');
+var 192.168.50.2 = dba.createCluster('vagranttest');
+
+----------------erro17/02/2022------------------------------
+Dba.createCluster: Group Replication failed to start: MySQL Error 3092 (HY000): localhost.localdomain:3306: 
+The server is not configured properly to be an active member of the group. Please see more details on error log. (RuntimeError)
+
+
+como mando deve ser posto no bash do centos- setsebool -P mysql_connect_any 1
+
+solução para erro as
+implementado o comando 'report_host=192.168.50.2' no arquivo  mysql-server.cnf no diretorio /etc/mysql/my.cnf.d/
+
+check com este comando se o as auteraçoes acima foram validas com este comando - SHOW VARIABLES LIKE '%report_host%';
+
+
+--------------------------------------------------
+
+cluster.addInstance('192.168.50.2@mysqldb2c');
+---------------------error22/02/2022------------------------------
+teste um - tentativa de alterar as pemissoes do SElinux não funcionou 
+lembre de liberar as portas iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
+
+alterar as portas do mysql para 330...
+mysqldb1c port = 3360
+mysqldb2c port = 3362
+mysqldb3c port =3363
+mysqldb4c port =3364
+
+--------------------------------------------------------
+
