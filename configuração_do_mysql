@@ -7,26 +7,13 @@ Para conectar / vagrant ssh
 Para reinicia / vagrant reload
 Para destruir /  vagrant destroy 
 Para terminar / vagrant halt
+vagrant suspend
 vagrant provision
 vagrant global-status
 vagrant global-status --prune
 para congigurar o ssh  / vagrant ssh-config
 ~/Desktop/backup/ambiente_dev/bionic
 ansible-playbook -i /vagrant/configs/ansible/hosts /vagrant/configs/ansible/playbook.ym
-======================================nginx============================================================
-nginx -t -c /etc/nginx/nginx.conf
-comandos nginx
-instalação CentOS/RHEL, o processo é facilmente executado com o comando
-yum install nginx ou  dnf install nginx
-status do nginx / systemctl status nginx
-inicio do nginx / service nginx start
-para reiniciar o nginx / systemctl restart nginx.service
-para parar o nginx / service nginx stop
-Caso o sevidor esteja apresentando lentidão por muitos processos 
-killall -9 nginx
-Validando configulação do nginx / nginx -t ou service nginx confistest
-upgrade do nginx / servise nginx update 
-verificando se a versão e modulos compilados no nginx / nginx -V
 
 ======================================mysql============================================================
 systemctl status mysqld
@@ -110,27 +97,6 @@ Modo de linha
 :w arquivo : salvar arquivo com o nome especificado.
 :wq : sair do vim salvando as alterações.
 :X : criptografa o arquivo.
-================================================a incluir no nginx.conf================================================================
-stream {
-    upstream mysql3306 {
-        hash $remote_addr consistent;
-        server 192.168.50.2:3306 weight=5 max_fails=3 fail_timeout=30s;
-    }
-	 server {
-        listen 3306;
-        proxy_connect_timeout 10s;
-        proxy_timeout 200s;
-        proxy_pass mysql3306;
-        #proxy_pass http://db;
-    }
-}
-server {
-    listen 80;
-    server_name db;
-    location / mysql -u vagrant -h 192.168.50.2 -p {
-        proxy_pass http:// 192.168.50.2:3306
-    }
-    nging -s reload
 #====================================================/etc/hosts==========================================================
 ideia descontinuada -  consistia em manter definir um hostname para cada maquina diretamente no arquivo hosts
 192.168.50.8 hostc
@@ -247,10 +213,13 @@ como mando deve ser posto no mysql-client - set global super_read_only=0;
 cluster.addInstance('vagrant@192.168.50....')
 cluster.addInstance('192.168.50.2@mysqldb2c');
 ---------------------error------------------------------
+
+cluster.addInstance('vagrant@192.168.50.3');
+
 teste um - tentativa de alterar as pemissoes do SElinux não funcionou 
 
 Solução:
-lembre de liberar as portas iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
+lembre de liberar as portas iptables -A INPUT -p tcp --dport 33061 -j ACCEPT
 
 alterar as portas do mysql para 330...
 mysqldb1c port = 3360
@@ -270,7 +239,7 @@ https://www.youtube.com/watch?v=PVo70d-BkUg
 
 ______________________________________________________________________________________________________________________________
 maquina mysqldb2c
-\c vagrant@192.168.50.3
+\c vagrant@192.168.50.3 passwork: bL29V1!2@94
 mysql -u root -p = password - bL29V1!2@93
 
 
@@ -283,9 +252,9 @@ dba.checkInstanceConfiguration('vagrant@192.168.50.3');
 cluster = dba.createCluster('vagranttest');
 
 var 192.168.50.2 = dba.createCluster('vagranttest');
-______________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________
 maquina mysqldb3c
-\c vagrant@192.168.50.4 não e pedida a senha na maquina tres #passwork: bL29V1!2@94
+\c vagrant@192.168.50.4 passwork: bL29V1!2@94
 
 mysql -u root -p = password - bL29V1!2@93
 
@@ -302,7 +271,7 @@ cluster = dba.createCluster('vagranttest');
 var 192.168.50.2 = dba.createCluster('vagranttest');
 ______________________________________________________________________________________________________________________________
 maquina mysqldb4c
-\c vagrant@192.168.50.10
+\c vagrant@192.168.50.10 passwork: bL29V1!2@94
 
 mysql -u root -p = password - bL29V1!2@93
 
@@ -365,7 +334,9 @@ Flush privileges;
 
 =====================================teste=================================================================
 protoclo de teste 
-vagrant up  mysqldb1c mysqldb2c mysqldb3c mysqldb4c nginxc hostc
+vagrant up  mysqldb1c mysqldb2c mysqldb3c mysqldb4c nginxc hostc mysqlrouter
+
+vagrant suspend mysqlrouter hostc mysqldb1c mysqldb2c mysqldb3c mysqldb4c
 
 find / -name 
 
@@ -406,3 +377,4 @@ re estabelecer o cluster quando reinicial o servidor de teste
 dba.rebootClusterFromCompleteOutage();
 
 
+vagrant suspend  mysqlrouter hostc mysqldb1c mysqldb2c mysqldb3c mysqldb4c

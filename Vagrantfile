@@ -53,7 +53,7 @@ configc.vm.define "nginxc" do |nginxc|
      
 
     nginxc.vm.network "forwarded_port", guest: 80, host:8080
-    nginxc.vm.network "forwarded_port", guest: 5432, host: 6543
+   # nginxc.vm.network "forwarded_port", guest: 5432, host: 6543
     #nginxc.vm.network "public_network" 
     nginxc.vm.network "private_network", ip: "192.168.50.6"
 
@@ -70,27 +70,27 @@ end
 configc.vm.define "mysqlrouter" do |mysqlrouter|
      
 
-  mysqlrouter.vm.network "forwarded_port", guest: 80, host:8080
+ # mysqlrouter.vm.network "forwarded_port", guest: 80, host:8083
   #mysqlrouter.vm.network "public_network" , ip: "192.168.1.24"
   mysqlrouter.vm.network "private_network", ip: "192.168.50.1"
 
-  mysqlrouter.vm.provision "shell", path: "nginxc.sh"
+  mysqlrouter.vm.provision "shell", path: "mysqlrouter.sh"
 
   mysqlrouter.vm.provider "virtualbox" do |vb|
       vb.memory =  1024
       vb.cpus = 1
-      vb.name = "nginxc"
+      vb.name = "mysqlrouter"
       
   end
 end       
 #==============================Cluster================================================
       configc.vm.define "mysqldb1c" do |mysqldb1c|
         
-        mysqldb1c.vm.network "forwarded_port", guest: 80, host:8081
+        #mysqldb1c.vm.network "forwarded_port", guest: 80, host:8081
 
         mysqldb1c.vm.network "private_network", ip: "192.168.50.2"
         mysqldb1c.vm.provision "shell", path: "mysqldbc.sh"
-        
+        #mysqldb1c.vm.provision "shell", path: "inicialisadormysqldb1c.sh"
 
         mysqldb1c.vm.provider "virtualbox" do |vb|
           vb.memory =  1024
@@ -99,23 +99,25 @@ end
           end 
       end
       
-      configc.vm.define "mysqldb2c" do |mysqldb2c|
-        mysqldb2c.vm.network "forwarded_port", guest: 80, host:8088
-        mysqldb2c.vm.network "private_network", ip: "192.168.50.3"
-        mysqldb2c.vm.provision "shell", path: "mysqldbc.sh"
+    configc.vm.define "mysqldb2c" do |mysqldb2c|
+    # mysqldb2c.vm.network "forwarded_port", guest: 80, host:8088
+      mysqldb2c.vm.network "private_network", ip: "192.168.50.3"
+      mysqldb2c.vm.provision "shell", path: "mysqldbc.sh"
+      #mysqldb1c.vm.provision "shell", path: "inicialisadormysqldb2c.sh"
 
-        mysqldb2c.vm.provider "virtualbox" do |vb|
-          vb.memory =  1024
-          vb.cpus = 1
-          vb.name = "mysqldb2c"
-          end 
-      end
+      mysqldb2c.vm.provider "virtualbox" do |vb|
+        vb.memory =  1024
+        vb.cpus = 1
+        vb.name = "mysqldb2c"
+        end 
+    end
 
     configc.vm.define "mysqldb3c" do |mysqldb3c|
-      mysqldb3c.vm.network "forwarded_port", guest: 80, host:8087
+     #mysqldb3c.vm.network "forwarded_port", guest: 80, host:8087
       mysqldb3c.vm.network "private_network", ip: "192.168.50.4"
       
       mysqldb3c.vm.provision "shell", path: "mysqldbc.sh"
+      #mysqldb1c.vm.provision "shell", path: "inicialisadormysqldb3c.sh"
 
      # mysqldb3c.vm.provision "shell", inline: $script_mysql
      # mysqldb3c.vm.provision "shell", inline: "service mysql restart"
@@ -128,10 +130,11 @@ end
     end
 
     configc.vm.define "mysqldb4c" do |mysqldb4c|
-      mysqldb4c.vm.network "forwarded_port", guest: 80, host:8086
+      #mysqldb4c.vm.network "forwarded_port", guest: 80, host:8086
       mysqldb4c.vm.network "private_network", ip: "192.168.50.10"
       
       mysqldb4c.vm.provision "shell", path: "mysqldbc.sh"
+      #mysqldb1c.vm.provision "shell", path: "inicialisadormysqldb4c.sh"
 
      # mysqldb3c.vm.provision "shell", inline: $script_mysql
      # mysqldb3c.vm.provision "shell", inline: "service mysql restart"

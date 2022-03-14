@@ -1,0 +1,76 @@
+pacotes nescesarios 
+mysql router https://dev.mysql.com/downloads/router/
+
+mysql libs / https://dev.mysql.com/doc/mysql-repo-excerpt/5.6/en/linux-installation-yum-repo.html
+            https://centos.pkgs.org/7/mysql-8.0-x86_64/mysql-community-libs-8.0.12-1.el7.x86_64.rpm.html
+
+mysql libs-compat / https://centos.pkgs.org/7/mysql-8.0-x86_64/mysql-community-libs-compat-8.0.22-1.el7.x86_64.rpm.html
+                    https://dev.mysql.com/doc/refman/8.0/en/linux-installation-rpm.html
+                     yum install mysql-community-{client,common,libs}-*
+
+mysql-server / https://dev.mysql.com/downloads/mysql/
+
+mysql-sh / https://dev.mysql.com/downloads/shell/
+
+
+mysql-common / https://centos.pkgs.org/7/mysql-8.0-x86_64/mysql-community-common-8.0.17-1.el7.x86_64.rpm.html
+
+
+
+systemctl start mysqlrouter.service
+systemctl status mysqlrouter.service
+systemctl enable mysqlrouter.service
+
+===============onde instalar o mysql-router===============
+
+mkdir -p /home/mysqlrouter 
+chown -r mysql:mysql /home/mysqlrouter/
+
+===============iniciando o mysql-router===============
+
+
+mysqlrouter  --bootstrap vagranttest@'192.168.50.2:3306': -d /home/mysqlrouter
+
+
+mysqlrouter  --bootstrap vagranttest@'192.168.50.2:3360': -d /home/mysqlrouter --user=vagranttest --conf-use-sockets --force
+
+https://dev.mysql.com/doc/mysql-router/8.0/en/mysql-router-deploying-bootstrapping.html
+ 
+
+ps -fea|grep mysqlrouter / ve se o sevisso esta funcionando
+
+mysql -u <user> -h localhost -p <port> -S /home/mysqlrouter/mysqlrouter.sock -p 
+
+sintaxy correta mysqlrouter  --bootstrap vagrant@'192.168.50.2:3306' -d /home/mysqlrouter --user vagrant --conf-use-sockets
+
+check liste de erro URI ==========================================================================================================
+
+nome do erro compelto "" Error: invalid URI: expected absolute path or an empty path at position 38 for: mysql://vagrant@192.168.50.2:3360:""
+
+
+
+link de referencia para o erro são 
+https://bugs.mysql.com/bug.php?id=95531
+https://dev.mysql.com/doc/relnotes/mysql-router/en/news-8-0-17.html
+https://dev.mysql.com/doc/mysql-router/8.0/en/mysqlrouter.html
+https://dev.mysql.com/doc/relnotes/mysql-router/en/news-2-1-1.html
+
+ping 192.168.50.1 de mysqlrouter para mysqldb1c e opsto OK
+
+
+reiniciando o mysql-router OK
+
+reinstalação do mysql-router e libs  e common OK
+
+firewall desligado OK
+
+porta liberada para uso a porta pedia foi a "33061" OK
+
+check de ususario mysql "vagrant" OK
+demais ususario na maquina são mysql_innodb_cluster_4202250109,  mysql_innodb_cluster_2522746434, mysql_innodb_cluster_1592820357e root 
+onde somente o usiario mysql_innodb_cluster_3780449317 esta sendo utilisado para o cluster , foi feita a tentativa de comunicação com o mesmo
+todos tem permição total 
+
+definição de ip no diretorio etc/hosts na maquina mysqldb1c OK
+
+
