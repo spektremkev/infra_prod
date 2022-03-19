@@ -184,7 +184,9 @@ mysql -u root -p
 bL29V1!2@93
 
 CREATE USER 'vagrant'@'%' IDENTIFIED BY 'bL29V1!2@94';
+
 GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'%' WITH GRANT OPTION;
+
 FLUSH PRIVILEGES;
 
 
